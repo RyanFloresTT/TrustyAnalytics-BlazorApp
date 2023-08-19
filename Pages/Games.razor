@@ -1,0 +1,36 @@
+﻿@page "/games"
+@using BlazorApp.Models
+@using System.Text.Json
+@inject HttpClient HttpClient
+
+@if (games == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @foreach (var game in games)
+    {
+        <p>@game.Name</p>
+    }
+}
+
+@code {
+    private List<Game> games;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string URL = "https://trustyanalytics.azurewebsites.net/api/games";
+        try
+        {
+            var jsonResponse = await HttpClient.GetFromJsonAsync<GameResponse>(URL);
+
+            if (jsonResponse == null) return;
+            games = jsonResponse.Games;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}
