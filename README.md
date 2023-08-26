@@ -1,0 +1,1 @@
+# TrustyAnalytics-BlazorApp
